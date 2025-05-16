@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import { useSanctum } from "#imports"; // penting agar tersambung dengan nuxt-sanctum
+// import { useSanctum } from "@qirolab/nuxt-sanctum-authentication";
 
 interface IUser {
   name: string;
@@ -8,35 +7,41 @@ interface IUser {
 }
 
 export const useAuthStore = defineStore("auth", () => {
-  const sanctum = useSanctum<IUser>();
-
   const user = ref<IUser | null>(null);
   const isLoggedIn = computed(() => user.value !== null);
 
-  // LOGIN
-  async function login(credentials: Record<string, any>) {
-    await sanctum.login(credentials, {}, (response, loggedInUser) => {
-      user.value = loggedInUser;
+  async function login(credentials: any) {
+    await $fetch("http://api.myapp.test/sanctum/csrf-cookie", {
+      credentials: "include",
     });
+
+    await $fetch("/login", {
+      method: "POST",
+      body: credentials,
+      credentials: "include",
+    });
+
+    await fetchUser();
   }
 
-  // LOGOUT
   async function logout() {
-    await sanctum.logout();
+    await $fetch("/logout", {
+      method: "POST",
+      credentials: "include",
+    });
     user.value = null;
   }
 
-  // FETCH USER
   async function fetchUser() {
-    await sanctum.refreshUser();
-    user.value = sanctum.user.value; // ⬅️ ambil dari composable langsung
+    try {
+      const data = await $fetch<IUser>("/api/user", {
+        credentials: "include",
+      });
+      user.value = data;
+    } catch {
+      user.value = null;
+    }
   }
 
-  return {
-    user,
-    isLoggedIn,
-    login,
-    logout,
-    fetchUser,
-  };
+  return { user, isLoggedIn, login, logout, fetchUser };
 });

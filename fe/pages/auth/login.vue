@@ -3,8 +3,8 @@ definePageMeta({
   middleware: ["$guest"],
 });
 
-import { useAuthStore } from "~/stores/auth";
-const auth = useAuthStore();
+// import { useAuthStore } from "~/stores/auth";
+const { login } = useSanctum();
 
 const form = ref({
   email: "",
@@ -14,19 +14,18 @@ const form = ref({
 const error = ref<string | null>(null);
 
 const submitForm = async () => {
+  // login(form.value);
   error.value = null;
+
   try {
-    // Wajib: Panggil endpoint CSRF dulu
-    await $fetch("/sanctum/csrf-cookie", { credentials: "include" });
+    // Langsung panggil login dari store
+    await login(form.value);
 
-    // Panggil login dari store (yang pakai useSanctum)
-    await auth.login(form.value);
-
-    // Redirect kalau berhasil
+    // Redirect setelah login sukses
     await navigateTo("/dashboard");
   } catch (err: any) {
     error.value = "Login gagal. Periksa email/password.";
-    console.error(err);
+    console.error("Login error:", err);
   }
 };
 </script>

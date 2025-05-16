@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { FetchError } from "ofetch";
 import Button from "~/components/ui/button/Button.vue";
-import { useAuthStore } from "~/stores/auth";
+// import { useAuthStore } from "~/stores/auth";
 
 definePageMeta({
   middleware: ["$guest"],
 });
 
-const auth = useAuthStore();
+// const auth = useAuthStore();
 
 const form = ref({
   name: "",
@@ -20,31 +20,26 @@ interface ValidationError {
   [key: string]: string[];
 }
 const errors = ref<ValidationError>({});
-
+const { refreshUser } = useSanctum();
 async function registerUser() {
   errors.value = {};
-  /*   🔁 Ringkasan Alur:
-  1. Panggil csrf-cookie → agar Laravel bisa set XSRF token di cookie
-  2. POST ke /api/register → endpoint dari Fortif
-  3. Panggil auth.fetchUser() → ambil user dari backend dan simpan di Pini
-  4. Redirect ke /dashboard
-  */
 
   try {
-    // Wajib: panggil csrf-cookie dulu
-    await $fetch("/sanctum/csrf-cookie", { credentials: "include" });
+    // ⛔️ Tidak perlu fetch csrf-cookie, sudah otomatis
 
-    // Register user ke backend Laravel Fortify
-    await $fetch("/api/register", {
+    // ✅ Register user ke Laravel Fortify
+    await useSanctumFetch("/api/register", {
       method: "POST",
       body: form.value,
-      credentials: "include",
+      credentials: "include", // penting agar cookie dikirim
     });
 
-    // Setelah register, fetch user agar state terisi
-    await auth.fetchUser();
+    // ✅ Ambil user setelah register sukses
+    // await auth.fetchUser();
 
-    // Redirect ke dashboard
+    await refreshUser();
+
+    // ✅ Redirect
     return navigateTo("/dashboard");
   } catch (e: any) {
     if (e instanceof FetchError && e.response?.status === 422) {

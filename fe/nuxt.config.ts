@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     "@qirolab/nuxt-sanctum-authentication",
     "shadcn-nuxt",
     "@pinia/nuxt",
+    "@nuxtjs/color-mode",
   ],
   postcss: {
     plugins: {
@@ -35,8 +36,8 @@ export default defineNuxtConfig({
     authMode: "cookie",
     sanctumEndpoints: {
       csrf: "/sanctum/csrf-cookie",
-      login: "/api/tokens/create",
-      logout: "/api/tokens/delete",
+      login: "/api/login",
+      logout: "/api/logout",
       user: "/api/user",
     },
 

@@ -3,11 +3,18 @@ import { useAuthStore } from "~/stores/auth";
 import { storeToRefs } from "pinia";
 import type Button from "~/components/ui/button/Button.vue";
 
-const auth = useAuthStore();
-const { isLoggedIn, user } = storeToRefs(useAuthStore()); // ✅ reactive
+// const auth = useAuthStore();
+// const { isLoggedIn, user } = storeToRefs(useAuthStore());
+
+interface IUser {
+  name: string;
+  email: string;
+}
+
+const { isLoggedIn, user, logout } = useSanctum<IUser>();
 
 function logoutUser() {
-  auth.logout();
+  logout();
   navigateTo("/"); // redirect ke homepage
 }
 </script>
