@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import { useAuthStore } from "~/stores/auth";
-import { storeToRefs } from "pinia";
-import type Button from "~/components/ui/button/Button.vue";
+import Button from '~/components/ui/button/Button.vue'
+import { useAuthStore } from '~/stores/auth'
 
-// const auth = useAuthStore();
-// const { isLoggedIn, user } = storeToRefs(useAuthStore());
-
-interface IUser {
-  name: string;
-  email: string;
-}
-
-const { isLoggedIn, user, logout } = useSanctum<IUser>();
+const auth = useAuthStore()
 
 function logoutUser() {
-  logout();
-  navigateTo("/"); // redirect ke homepage
+  auth.logout().then(() => {
+    navigateTo('/')
+  })
 }
 </script>
 
@@ -27,14 +19,14 @@ function logoutUser() {
           <NuxtLink to="/" class="font-bold text-xl">Home</NuxtLink>
         </div>
         <div>
-          <template v-if="!isLoggedIn">
+          <template v-if="!auth.isLoggedIn">
             <NuxtLink to="/auth/login" class="mr-4">Login</NuxtLink>
             <NuxtLink to="/auth/register" class="mr-4">Register</NuxtLink>
           </template>
-          <template v-if="isLoggedIn">
+          <template v-else>
             <NuxtLink to="/dashboard" class="mr-4">Dashboard</NuxtLink>
             <Button @click.prevent="logoutUser" class="mr-4">Logout</Button>
-            <span>Welcome, {{ user?.name }}!</span>
+            <span>Welcome, {{ auth.user?.name }}!</span>
           </template>
         </div>
       </div>
