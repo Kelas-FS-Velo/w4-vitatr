@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Button from '~/components/ui/button/Button.vue';
+
 definePageMeta({
   middleware: ["$guest"],
 });
@@ -55,12 +57,12 @@ const submitForm = async () => {
             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
           />
         </div>
-        <button
+        <Button
           type="submit"
           class="w-full px-4 py-2 mt-3 text-sm font-medium text-white bg-blue-500"
         >
           Login
-        </button>
+        </Button>
         <p v-if="error" class="mt-2 text-sm text-red-500">{{ error }}</p>
       </form>
     </div>
