@@ -26,7 +26,14 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/color-mode",
     "@nuxt/test-utils/module",
+    "@nuxtjs/google-fonts",
   ],
+  googleFonts: {
+    families: {
+      DynaPuff: true, // ini cukup
+    },
+    display: "swap", // untuk performa lebih baik
+  },
   colorMode: {
     classSuffix: "",
   },
@@ -66,4 +73,5 @@ export default defineNuxtConfig({
     },
   },
 });
+
 

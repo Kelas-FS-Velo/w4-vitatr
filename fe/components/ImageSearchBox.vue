@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 </script>
 
 <template>
-  <div class="">
+  <div class="bg-amber-200">
     <!-- <Label for="picture">📚 Browse the Library</Label> -->
     <Input id="picture" type="file" />
   </div>

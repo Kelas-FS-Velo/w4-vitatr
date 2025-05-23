@@ -10,6 +10,7 @@ const config: Config = {
     "./app.vue",
     "./plugins/**/*.{js,ts}",
   ],
+
   theme: {
     extend: {
       borderRadius: {
@@ -58,6 +59,9 @@ const config: Config = {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+      },
+      fontFamily: {
+        dynapuff: ["DynaPuff", "cursive"],
       },
     },
   },
