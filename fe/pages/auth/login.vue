@@ -1,31 +1,30 @@
 <script setup lang="ts">
-import Button from '~/components/ui/button/Button.vue';
+import Button from "~/components/ui/button/Button.vue";
+import { useAuthStore } from "~/stores/auth";
 
 definePageMeta({
   middleware: ["$guest"],
 });
 
-// import { useAuthStore } from "~/stores/auth";
-const { login } = useSanctum();
+useHead({
+  title: "ReadAIbit | Login",
+});
 
 const form = ref({
   email: "",
   password: "",
 });
 
+const auth = useAuthStore();
 const error = ref<string | null>(null);
 
 const submitForm = async () => {
-  // login(form.value);
   error.value = null;
 
   try {
-    // Langsung panggil login dari store
-    await login(form.value);
-
-    // Redirect setelah login sukses
-    await navigateTo("/dashboard");
-  } catch (err: any) {
+    await auth.login(form.value);
+    // redirect akan terjadi di dalam store ketika login sukses
+  } catch (err) {
     error.value = "Login gagal. Periksa email/password.";
     console.error("Login error:", err);
   }

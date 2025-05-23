@@ -3,6 +3,18 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
+  components: [
+    {
+      path: "~/components",
+      pathPrefix: false,
+    },
+  ],
+  runtimeConfig: {
+    public: {
+      API_URL: process.env.API_URL,
+      API_BASE_URL: process.env.API_BASE_URL,
+    },
+  },
   devServer: {
     host: "myapp.test",
     port: 3000,
@@ -13,7 +25,11 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@pinia/nuxt",
     "@nuxtjs/color-mode",
+    "@nuxt/test-utils/module",
   ],
+  colorMode: {
+    classSuffix: "",
+  },
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -32,7 +48,7 @@ export default defineNuxtConfig({
     componentDir: "./components/ui",
   },
   laravelSanctum: {
-    apiUrl: "http://api.myapp.test",
+    apiUrl: process.env.API_BASE_URL,
     authMode: "cookie",
     sanctumEndpoints: {
       csrf: "/sanctum/csrf-cookie",

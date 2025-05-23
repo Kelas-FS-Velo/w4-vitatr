@@ -1,8 +1,12 @@
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
-    "types": ["nuxt"]
+    "baseUrl": ".", // ⬅️ Wajib: agar paths relatif dari root
+    "paths": {
+      "~/*": ["./*"], // ⬅️ Alias ~ untuk Nuxt
+      "@/*": ["./*"] // ⬅️ Alias @ juga umum dipakai
+    },
+    "types": ["nuxt", "vue", "vitest/globals"]
   }
 }
 
