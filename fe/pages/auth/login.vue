@@ -32,10 +32,10 @@ const submitForm = async () => {
 </script>
 
 <template>
-  <div
-    class="flex flex-col items-center justify-center min-h-screen bg-gray-400"
-  >
-    <div class="w-full max-w-md p-8 space-y-3 bg-white shadow-lg rounded-lg">
+  <div class="flex flex-col items-center justify-center min-h-screen">
+    <div
+      class="w-full max-w-md p-8 space-y-3 bg-secondary shadow-lg rounded-lg"
+    >
       <h1 class="text-2xl font-bold text-center">Login</h1>
       <form @submit.prevent="submitForm">
         <div class="flex flex-col mt-3 space-y-1">
@@ -44,7 +44,7 @@ const submitForm = async () => {
             id="email"
             type="email"
             v-model="form.email"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+            class="w-full px-3 py-2 text-secondary border border-gray-300 rounded-md focus:outline-none"
           />
         </div>
         <div class="flex flex-col mt-3 space-y-1">
@@ -53,7 +53,7 @@ const submitForm = async () => {
             id="password"
             type="password"
             v-model="form.password"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none"
+            class="w-full px-3 py-2 text-secondary border border-gray-300 rounded-md focus:outline-none"
           />
         </div>
         <Button

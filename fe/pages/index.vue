@@ -21,7 +21,7 @@
               start reading.
             </p>
             <div class="flex flex-col gap-1 items-center mt-8">
-              <div class="flex justify-between items-center w-full">
+              <div class="flex justify-between items-center w-full px-4">
                 <p class="font-medium tracking-tight">🔍 Try the AI Search</p>
                 <p class="font-medium tracking-tight">📚 Browse the Library</p>
               </div>

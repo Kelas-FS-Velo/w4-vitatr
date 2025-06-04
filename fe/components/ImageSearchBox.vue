@@ -4,8 +4,8 @@ import { Input } from "@/components/ui/input";
 </script>
 
 <template>
-  <div class="bg-amber-200">
+  <div class="bg-amber-200 py-3 rounded-full w-full">
     <!-- <Label for="picture">📚 Browse the Library</Label> -->
-    <Input id="picture" type="file" />
+    <Input id="picture" type="file" class="border-none" />
   </div>
 </template>

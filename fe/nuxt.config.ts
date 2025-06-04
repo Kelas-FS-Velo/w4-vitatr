@@ -27,6 +27,7 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@nuxt/test-utils/module",
     "@nuxtjs/google-fonts",
+    "@nuxt/image",
   ],
   googleFonts: {
     families: {
@@ -73,5 +74,3 @@ export default defineNuxtConfig({
     },
   },
 });
-
-

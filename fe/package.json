@@ -13,6 +13,7 @@
     "test:ui": "nuxi test --ui"
   },
   "dependencies": {
+    "@nuxt/image": "1.10.0",
     "@nuxtjs/google-fonts": "^3.2.0",
     "@pinia/nuxt": "^0.11.0",
     "@qirolab/nuxt-sanctum-authentication": "0.1.15",
