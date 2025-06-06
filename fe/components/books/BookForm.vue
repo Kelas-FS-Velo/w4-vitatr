@@ -13,7 +13,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useBookStore } from '~/stores/book'
+import { useBookStore } from '~/stores/books'
 
 const props = defineProps({
   book: Object
