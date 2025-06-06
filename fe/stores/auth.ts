@@ -1,11 +1,5 @@
 import { defineStore } from "pinia";
-import { FetchError } from "ofetch";
-import type {
-  IUser,
-  ILoginPayload,
-  IRegisterPayload,
-  IValidationError,
-} from "~/types/auth";
+import type { IUser, ILoginPayload, IRegisterPayload } from "~/types/auth";
 import { useFormErrors } from "~/composables/useFormErrors";
 
 export const useAuthStore = defineStore("auth", () => {
@@ -17,7 +11,6 @@ export const useAuthStore = defineStore("auth", () => {
     errors.value = {};
 
     try {
-      console.log("Login payload:", payload);
       await useSanctumFetch("/api/login", {
         method: "POST",
         body: payload,
@@ -26,19 +19,14 @@ export const useAuthStore = defineStore("auth", () => {
 
       await refreshUser();
 
-      // ✅ Redirect setelah login berdasarkan role
       if (user.value?.role === "admin") {
         return navigateTo("/admin");
       }
 
       return navigateTo("/dashboard");
     } catch (e: any) {
-      if (e instanceof FetchError && e.response?.status === 422) {
-        errors.value = e.response._data.errors;
-      } else {
-        console.error("Unexpected error:", e);
-      }
-      throw e; // lempar ke pemanggil supaya bisa ditangani
+      setErrors(e);
+      throw e;
     }
   }
 
@@ -55,11 +43,7 @@ export const useAuthStore = defineStore("auth", () => {
       await refreshUser();
       return true;
     } catch (e: any) {
-      if (e instanceof FetchError && e.response?.status === 422) {
-        errors.value = e.response._data.errors;
-      } else {
-        console.error("Unexpected error:", e);
-      }
+      setErrors(e);
       return false;
     }
   }
