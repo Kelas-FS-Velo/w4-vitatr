@@ -1,20 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
+import { resolve } from "path";
+
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
+  alias: {
+    "#tailwind-config": resolve(__dirname, "tailwind.config"),
+  },
   components: [
     {
       path: "~/components",
       pathPrefix: false,
     },
   ],
-  runtimeConfig: {
-    public: {
-      API_URL: process.env.API_URL,
-      API_BASE_URL: process.env.API_BASE_URL,
-    },
-  },
   devServer: {
     host: "myapp.test",
     port: 3000,
@@ -23,6 +22,8 @@ export default defineNuxtConfig({
   modules: [
     "@qirolab/nuxt-sanctum-authentication",
     "shadcn-nuxt",
+    "@nuxt/icon",
+    "nuxt-headlessui",
     "@pinia/nuxt",
     "@nuxtjs/color-mode",
     "@nuxt/test-utils/module",
@@ -56,7 +57,7 @@ export default defineNuxtConfig({
     componentDir: "./components/ui",
   },
   laravelSanctum: {
-    apiUrl: process.env.API_BASE_URL,
+    apiUrl: "http://api.myapp.test",
     authMode: "cookie",
     sanctumEndpoints: {
       csrf: "/sanctum/csrf-cookie",
@@ -74,3 +75,4 @@ export default defineNuxtConfig({
     },
   },
 });
+

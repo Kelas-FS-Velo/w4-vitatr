@@ -16,7 +16,7 @@ function logoutUser() {
 
 <template>
   <nav class="sticky top-0 z-50 backdrop-blur-sm bg-secondary/30 py-4 px-6">
-    <div class="container mx-auto flex items-center justify-between">
+    <div class="w-full mx-auto flex items-center justify-between">
       <!-- Left: Logo -->
       <NuxtLink to="/" class="font-bold text-xl mr-6">Home</NuxtLink>
 
@@ -28,6 +28,9 @@ function logoutUser() {
 
       <!-- Right: Auth buttons -->
       <div class="flex items-center gap-4">
+        <!-- dark mode -->
+        <ColorMode />
+
         <template v-if="!auth.isLoggedIn">
           <NuxtLink to="/auth/login" class="hover:underline">Login</NuxtLink>
           <NuxtLink to="/auth/register" class="hover:underline"
@@ -35,7 +38,6 @@ function logoutUser() {
           >
         </template>
         <template v-else>
-          <ColorMode />
           <NuxtLink to="/dashboard" class="hover:underline">Dashboard</NuxtLink>
           <Button @click.prevent="logoutUser">Logout</Button>
           <div class="inline-flex gap-1 items-center">

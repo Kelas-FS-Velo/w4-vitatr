@@ -1,0 +1,8 @@
+<!-- layouts/admin.vue -->
+<script setup lang="ts"></script>
+
+<template>
+  <div class="min-h-screen">
+    <slot />
+  </div>
+</template>

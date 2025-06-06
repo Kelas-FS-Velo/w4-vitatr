@@ -1,7 +1,9 @@
 <script setup lang="ts">
 definePageMeta({
+  layout: "admin", // <== layout ini akan pakai layouts/admin.vue
   middleware: ["admin"],
 });
+
 useHead({
   title: "Admin Dashboard",
 });
@@ -14,17 +16,32 @@ const stats = [
 </script>
 
 <template>
-  <div class="p-8">
-    <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
+  <div>
+    <!-- Header -->
+    <HeaderAdmin />
+    <div class="container lg:grid lg:grid-cols-12 lg:gap-10">
+      <!-- Sidebar -->
+      <SidebarAdmin
+        class="sticky top-[65px] hidden h-[calc(100vh-65px)] py-5 lg:col-span-3 lg:block"
+      />
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <div
-        v-for="item in stats"
-        :key="item.label"
-        class="bg-white rounded-xl shadow p-4 text-center"
-      >
-        <div class="text-gray-500 text-sm">{{ item.label }}</div>
-        <div class="text-2xl font-bold">{{ item.value }}</div>
+      <!-- Main Section -->
+      <main class="py-5 lg:col-span-6">
+        <!-- Status Cards -->
+        <StatusCard />
+        <!-- New customer list -->
+        <NewCustomers />
+        <!-- Charts -->
+        <SalesChart />
+        <!-- Recent orders -->
+        <RecentOrders />
+      </main>
+      <div class="hidden py-5 lg:col-span-3 lg:block">
+        <!-- Profile info to the side -->
+        <ProfileInfo />
+        <hr class="my-5" />
+        <!-- Reminders to the side -->
+        <Reminders />
       </div>
     </div>
   </div>

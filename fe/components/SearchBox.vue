@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 
 <template>
   <div
-    class="relative w-full max-w-sm items-center bg-amber-200 py-3 rounded-full"
+    class="relative w-full max-w-sm items-center bg-amber-200 py-3 rounded-full px-4"
   >
     <Input
       id="search"
@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
       class="pl-10 border-none text-lg"
     />
     <span
-      class="absolute start-0 inset-y-0 flex items-center justify-center px-2"
+      class="absolute start-0 inset-y-0 flex items-center justify-center px-6"
     >
       <Search class="size-6 text-muted-foreground" />
     </span>

@@ -16,6 +16,7 @@ export const useAuthStore = defineStore("auth", () => {
     errors.value = {};
 
     try {
+      console.log("Login payload:", payload);
       await useSanctumFetch("/api/login", {
         method: "POST",
         body: payload,
