@@ -1,23 +1,17 @@
-import type { IBook } from "~/types/books";
+import { useBookStore } from "~/stores/books";
 
 export function useFetchBooks() {
-  const books = ref<IBook[]>([]);
-  const isLoading = ref(false);
+  const bookStore = useBookStore();
+  const { books, isLoading } = storeToRefs(bookStore);
+  const { fetchBooks } = bookStore;
 
-  async function fetch() {
-    isLoading.value = true;
-    try {
-      books.value = await useSanctumFetch("/api/books");
-    } catch (e) {
-      console.error("Error fetching books", e);
-    } finally {
-      isLoading.value = false;
-    }
-  }
+  onMounted(() => {
+    fetchBooks();
+  });
 
   return {
     books,
     isLoading,
-    fetch,
+    fetchBooks, // bisa dipakai manual kalau perlu
   };
 }
