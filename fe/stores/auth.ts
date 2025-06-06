@@ -6,11 +6,12 @@ import type {
   IRegisterPayload,
   IValidationError,
 } from "~/types/auth";
+import { useFormErrors } from "~/composables/useFormErrors";
 
 export const useAuthStore = defineStore("auth", () => {
   const { user, logout, refreshUser } = useSanctum<IUser>();
   const isLoggedIn = computed(() => !!user.value);
-  const errors = ref<IValidationError>({});
+  const { errors, setErrors } = useFormErrors();
 
   async function login(payload: ILoginPayload) {
     errors.value = {};
