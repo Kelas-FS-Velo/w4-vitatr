@@ -1,4 +1,4 @@
-import type { IBook } from "~/types/book";
+import type { IBook } from "~/types/books";
 
 export function useFetchBooks() {
   const books = ref<IBook[]>([]);
