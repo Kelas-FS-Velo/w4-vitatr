@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useLoanStore } from '@/stores/loan'
+import { useLoanStore } from '~/stores/loans'
 
 const form = ref({
   book_id: 0,

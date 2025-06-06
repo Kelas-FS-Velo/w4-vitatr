@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useLoanStore } from '~/stores/loan'
+import { useLoanStore } from '~/stores/loans'
 
 const loanStore = useLoanStore()
 
