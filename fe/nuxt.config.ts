@@ -23,7 +23,6 @@ export default defineNuxtConfig({
     "@qirolab/nuxt-sanctum-authentication",
     "shadcn-nuxt",
     "@nuxt/icon",
-    "nuxt-headlessui",
     "@pinia/nuxt",
     "@nuxtjs/color-mode",
     "@nuxt/test-utils/module",

@@ -1,6 +1,6 @@
 <template>
-  <div class="px-6 pt-8 pb-20 md:pt-5 md:pb-10">
-    <div class="container mx-auto">
+  <div class="w-full px-6 pt-8 pb-20 md:pt-5 md:pb-10">
+    <div class="">
       <div class="md:flex items-center">
         <!-- Text Section -->
         <Transition name="fade-slide-right">

@@ -5,13 +5,13 @@ import { Input } from "@/components/ui/input";
 
 <template>
   <div
-    class="relative w-full max-w-sm items-center bg-amber-200 py-3 rounded-full px-4"
+    class="relative w-full max-w-sm items-center bg-secondary py-3 rounded-full px-4"
   >
     <Input
       id="search"
       type="text"
       placeholder="Search..."
-      class="pl-10 border-none text-lg"
+      class="pl-10 text-lg text-primary !ring-0 !ring-transparent !focus-visible:ring-0 !focus-visible:ring-transparent !border-none !outline-none"
     />
     <span
       class="absolute start-0 inset-y-0 flex items-center justify-center px-6"

@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import Button from "~/components/ui/button/Button.vue";
-import { useAuthStore } from "~/stores/auth";
-import Avatar from "~/components/ui/avatar/Avatar.vue";
-import AvatarImage from "~/components/ui/avatar/AvatarImage.vue";
-import AvatarFallback from "~/components/ui/avatar/AvatarFallback.vue";
-
 const auth = useAuthStore();
 
 function logoutUser() {
@@ -12,6 +6,11 @@ function logoutUser() {
     navigateTo("/");
   });
 }
+
+const mode = useColorMode();
+const toggleTheme = () => {
+  mode.value = mode.value === "dark" ? "light" : "dark";
+};
 </script>
 
 <template>
@@ -29,7 +28,13 @@ function logoutUser() {
       <!-- Right: Auth buttons -->
       <div class="flex items-center gap-4">
         <!-- dark mode -->
-        <ColorMode />
+        <!-- <ColorMode /> -->
+        <button
+          @click="toggleTheme"
+          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-background"
+        >
+          <Icon name="heroicons:sun" class="h-5 w-5" />
+        </button>
 
         <template v-if="!auth.isLoggedIn">
           <NuxtLink to="/auth/login" class="hover:underline">Login</NuxtLink>

@@ -1,20 +1,21 @@
 <template>
   <header class="sticky top-0 z-20 border-b bg-background/80 backdrop-blur">
     <!-- Container of flex -->
-    <div class="container flex h-16 items-center justify-between">
+    <div class="px-4 flex h-16 items-center justify-between">
       <!-- Logo and page title -->
       <div class="flex items-center gap-3">
+        <!-- Burger Menu for Mobile -->
         <button
-          @click="isOpen = true"
+          @click="openMenu"
           aria-label="Open menu"
-          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-background lg:hidden"
+          class="flex h-9 w-9 items-center justify-center rounded-full border bg-background lg:hidden"
         >
-          <span class="sr-only">Button used to open menu</span>
+          <span class="sr-only">Open menu</span>
           <Icon name="heroicons:bars-2" />
         </button>
         <!-- Logo -->
         <img
-          src="https://img.logoipsum.com/296.svg"
+          src="https://randomuser.me/api/portraits/med/men/75.jpg"
           alt="Analytics logo"
           class="h-7 w-7 object-contain"
         />
@@ -32,7 +33,16 @@
         </button>
 
         <!-- Profile Dropdown menu -->
-        <HMenu as="div" class="relative">
+        <!-- <NuxtLink to="/dashboard" class="hover:underline">Dashboard</NuxtLink> -->
+        <!-- <Button @click.prevent="logoutUser">Logout</Button> -->
+        <div class="inline-flex gap-1 items-center">
+          <Avatar>
+            <AvatarImage src="https://github.com/unovue.png" alt="@unovue" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+          <span class="">{{ auth.user?.name }}!</span>
+        </div>
+        <!-- <HMenu as="div" class="relative">
           <HMenuButton
             class="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full border bg-background"
           >
@@ -73,11 +83,11 @@
               </div>
             </HMenuItems>
           </TransitionScale>
-        </HMenu>
+        </HMenu> -->
       </div>
     </div>
     <!-- Mobile menu -->
-    <MobileMenu v-model="isOpen" />
+    <!-- <MobileMenu v-model="isOpen" /> -->
   </header>
 </template>
 
@@ -87,16 +97,33 @@ const toggleTheme = () => {
   mode.value = mode.value === "dark" ? "light" : "dark";
 };
 
+const props = defineProps<{
+  isOpen: boolean;
+}>();
+const emit = defineEmits(["update:isOpen"]);
+
+function openMenu() {
+  emit("update:isOpen", true);
+}
+
+const auth = useAuthStore();
+
+function logoutUser() {
+  auth.logout().then(() => {
+    navigateTo("/");
+  });
+}
+
 // Items that will be displayed in menu
-const profileMenuOptions = [
-  { title: "Profile" },
-  { title: "Billing" },
-  { title: "Settings" },
-  { title: "Team members" },
-  { title: "Sales" },
-  { divider: true },
-  { title: "Logout" },
-];
+// const profileMenuOptions = [
+//   { title: "Profile" },
+//   { title: "Billing" },
+//   { title: "Settings" },
+//   { title: "Team members" },
+//   { title: "Sales" },
+//   { divider: true },
+//   { title: "Logout" },
+// ];
 
 // Used to open/close menu
 const isOpen = ref(false);

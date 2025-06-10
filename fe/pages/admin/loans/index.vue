@@ -16,17 +16,17 @@
         <tr v-for="loan in loanStore.loans" :key="loan.id">
           <td>{{ loan.user?.name }}</td>
           <td>{{ loan.book?.title }}</td>
-          <td>{{ loan.borrowed_at }}</td>
-          <td>{{ loan.due_at }}</td>
-          <td>{{ loan.returned_at || 'Belum' }}</td>
+          <!-- <td>{{ loan.borrowed_at }}</td> -->
+          <!-- <td>{{ loan.due_at }}</td> -->
+          <!-- <td>{{ loan.returned_at || 'Belum' }}</td> -->
           <td>
-            <button
+            <!-- <button
               v-if="!loan.returned_at"
               @click="handleReturn(loan.id)"
               class="text-blue-600 underline"
             >
               Kembalikan
-            </button>
+            </button> -->
           </td>
         </tr>
       </tbody>
@@ -35,17 +35,23 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useLoanStore } from '~/stores/loans'
+definePageMeta({
+  layout: "admin", // <== layout ini akan pakai layouts/admin.vue
+  middleware: ["admin"],
+});
 
-const loanStore = useLoanStore()
+useHead({
+  title: "Admin Dashboard",
+});
+
+const loanStore = useLoanStore();
 
 onMounted(() => {
-  loanStore.fetchLoans()
-})
+  loanStore.fetchLoans();
+});
 
 const handleReturn = async (id: number) => {
-  await loanStore.returnLoan(id)
-  await loanStore.fetchLoans()
-}
+  await loanStore.returnLoan(id);
+  await loanStore.fetchLoans();
+};
 </script>

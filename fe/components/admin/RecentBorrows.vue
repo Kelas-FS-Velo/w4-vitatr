@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5">
-    <p class="font-bold">Recent orders</p>
+    <p class="font-bold">Recent borrows</p>
 
     <div
       class="mt-5 overflow-x-auto rounded-md border bg-background scrollbar-thin scrollbar-thumb-input scrollbar-thumb-rounded-md"
@@ -9,10 +9,10 @@
         <thead>
           <tr class="border-b text-left text-xs">
             <th class="p-4 font-medium uppercase text-muted-foreground">
-              Product
+              Members
             </th>
             <th class="p-4 font-medium uppercase text-muted-foreground">
-              Payment
+              Title
             </th>
             <th class="p-4 font-medium uppercase text-muted-foreground">
               Status
@@ -26,8 +26,8 @@
             class="border-b text-left text-sm last:border-b-0 hover:bg-muted"
           >
             <td class="p-4">Nike Shoes</td>
-            <td class="p-4">Paid</td>
-            <td class="p-4">Shipped</td>
+            <td class="p-4">Atomic Habit</td>
+            <td class="p-4">Borrowed</td>
             <td class="p-4">
               <div class="flex items-center gap-3">
                 <button>
