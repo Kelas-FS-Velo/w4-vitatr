@@ -44,7 +44,7 @@ const submitForm = async () => {
             id="email"
             type="email"
             v-model="form.email"
-            class="w-full px-3 py-2 text-secondary border border-gray-300 rounded-md focus:outline-none"
+            class="w-full px-3 py-2 border border-secondary rounded-md focus:outline-none"
           />
         </div>
         <div class="flex flex-col mt-3 space-y-1">
@@ -53,12 +53,12 @@ const submitForm = async () => {
             id="password"
             type="password"
             v-model="form.password"
-            class="w-full px-3 py-2 text-secondary border border-gray-300 rounded-md focus:outline-none"
+            class="w-full px-3 py-2 border border-secondary rounded-md focus:outline-none"
           />
         </div>
         <Button
           type="submit"
-          class="w-full px-4 py-2 mt-3 text-sm font-medium text-white bg-blue-500"
+          class="mt-8 w-full px-4 py-2 text-sm font-medium text-secondary"
         >
           Login
         </Button>

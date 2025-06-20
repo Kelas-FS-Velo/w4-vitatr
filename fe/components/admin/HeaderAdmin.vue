@@ -25,12 +25,7 @@
 
       <!-- Right side of header -->
       <div class="flex items-center gap-5">
-        <button
-          @click="toggleTheme"
-          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border bg-background"
-        >
-          <Icon name="heroicons:sun" class="h-5 w-5" />
-        </button>
+        <ColorMode />
 
         <!-- Profile Dropdown menu -->
         <!-- <NuxtLink to="/dashboard" class="hover:underline">Dashboard</NuxtLink> -->

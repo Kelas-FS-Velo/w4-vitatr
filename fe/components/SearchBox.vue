@@ -7,12 +7,13 @@ import { Input } from "@/components/ui/input";
   <div
     class="relative w-full max-w-sm items-center bg-secondary py-3 rounded-full px-4"
   >
-    <Input
+    <input
       id="search"
       type="text"
       placeholder="Search..."
-      class="pl-10 text-lg text-primary !ring-0 !ring-transparent !focus-visible:ring-0 !focus-visible:ring-transparent !border-none !outline-none"
+      class="w-full rounded-full border-none outline-none px-10 py-2 text-lg text-primary bg-transparent"
     />
+
     <span
       class="absolute start-0 inset-y-0 flex items-center justify-center px-6"
     >
