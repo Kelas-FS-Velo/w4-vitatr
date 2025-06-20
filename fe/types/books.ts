@@ -1,16 +1,30 @@
+export type BookCategory =
+  | "children"
+  | "adventure"
+  | "fiction"
+  | "non-fiction"
+  | "science"
+  | "history";
+
 export interface IBook {
-  id: number;
+  id: string; // UUID format
   title: string;
   author: string;
-  published_at: string;
-  available_copies: number;
-  total_copies: number;
+  isbn: string; // Format ISBN
+  description: string; // Untuk semantic search
+  publication_year: number;
+  cover_image: string; // URL atau path ke gambar
+  categories: BookCategory[]; // Array dari kategori/tag
+  stock_available: number;
+  vector_id?: string; // Opsional: ID vektor di Qdrant
 }
 
 export interface IBookPayload {
   title: string;
   author: string;
-  published_at: string;
-  available_copies: number;
-  total_copies: number;
+  isbn?: string; // Opsional jika tidak semua buku perlu ISBN
+  description: string;
+  publication_year?: number; // Opsional
+  categories: BookCategory[];
+  stock_available?: number; // Default bisa 0
 }

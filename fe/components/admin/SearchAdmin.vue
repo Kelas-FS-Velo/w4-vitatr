@@ -2,9 +2,8 @@
   <section class="mt-5">
     <p class="font-bold">Search</p>
     <div
-      class="mt-5 flex w-full items-center justify-center gap-6 rounded-lg border bg-background px-5 py-5"
+      class="mt-5 flex w-full items-center justify-center rounded-lg border bg-background px-5 py-5"
     >
-      <SearchBox />
       <SearchBox />
       <!-- <div class="flex shrink-0 flex-col items-center gap-2">
         <button
