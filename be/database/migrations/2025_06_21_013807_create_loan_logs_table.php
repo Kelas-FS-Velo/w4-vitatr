@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('books', function (Blueprint $table) {
-            $table->year('published_year')->after('author');
+        Schema::create('loan_logs', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('loan_id')->constrained()->onDelete('cascade');
+            $table->enum('action', ['borrowed', 'returned', 'overdue', 'renewed']);
+            $table->timestamp('logged_at');
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('books', function (Blueprint $table) {
-            $table->dropColumn('published_year');
-        });
+        Schema::dropIfExists('loan_logs');
     }
 };

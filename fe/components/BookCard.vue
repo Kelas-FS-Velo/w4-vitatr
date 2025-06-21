@@ -7,11 +7,9 @@
 </template>
 
 <script setup lang="ts">
+import type { IBook } from "~/types/books";
+
 defineProps<{
-  book: {
-    id: number;
-    title: string;
-    // tambah field lainnya jika perlu
-  };
+  book: IBook;
 }>();
 </script>

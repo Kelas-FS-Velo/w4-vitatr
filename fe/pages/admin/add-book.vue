@@ -1,8 +1,29 @@
 <script setup lang="ts">
-import Button from '~/components/ui/button/Button.vue';
+import Button from "~/components/ui/button/Button.vue";
 
 definePageMeta({
   middleware: ["admin"],
+});
+
+import { useForm } from 'vee-validate';
+import { toTypedSchema } from '@vee-validate/zod';
+import { bookPayloadSchema } from '~/schemas/bookSchema';
+
+const { handleSubmit, errors, values } = useForm({
+  validationSchema: toTypedSchema(bookPayloadSchema),
+});
+
+const onSubmit = handleSubmit(async (data) => {
+  try {
+    await $fetch('/api/books', {
+      method: 'POST',
+      body: data,
+    });
+
+    // Feedback success
+  } catch (error) {
+    // Handle error response
+  }
 });
 </script>
 
@@ -11,7 +32,8 @@ definePageMeta({
     <h1 class="text-3xl font-bold">Add book</h1>
     <NuxtLink to="/admin">Back</NuxtLink>
     <div class="flex flex-col items-start">
-      <form @submit.prevent="">
+      <form @submit.prevent="onSubmit">
+        <!-- Input fields + errors.title dsb. -->
         <div action="" class="mb-3">
           <label for="">Title</label>
           <input type="text" class="" />

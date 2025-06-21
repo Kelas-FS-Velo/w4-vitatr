@@ -37,5 +37,10 @@ return [
     'jinaai' => [
     'key' => env('JINAAI_API_KEY'),
     ],
+    'qdrant' => [
+    'endpoint' => env('QDRANT_ENDPOINT'),
+    'collection' => env('QDRANT_COLLECTION', 'books'),
+],
+
 
 ];
