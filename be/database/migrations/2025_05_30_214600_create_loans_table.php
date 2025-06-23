@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('loans', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('book_id')->constrained('books')->onDelete('cascade'); // lebih eksplisit
+            $table->id(); // Tetap bigint autoincrement
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Asumsinya user masih pakai bigint
+            $table->uuid('book_id'); // Sesuaikan tipe dengan books.id (uuid)
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
             $table->date('borrowed_at');
             $table->date('due_at');
             $table->date('returned_at')->nullable();
