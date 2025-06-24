@@ -4,7 +4,7 @@ import { toTypedSchema } from "@vee-validate/zod";
 import { useForm } from "vee-validate";
 import { h } from "vue";
 import * as z from "zod";
-import { toast } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/toast";
 
 definePageMeta({
   layout: "admin",
@@ -17,23 +17,70 @@ useHead({
 
 const formSchema = toTypedSchema(
   z.object({
-    username: z.string().min(2).max(50),
+    title: z.string().min(2).max(100),
+    author: z.string().min(2).max(50),
+    description: z.string().min(10),
+    categories: z
+      .array(
+        z.enum([
+          "children",
+          "adventure",
+          "fiction",
+          "non-fiction",
+          "science",
+          "history",
+        ])
+      )
+      .nonempty(),
+    isbn: z
+      .string()
+      .regex(/^(?:\d{9}[\dXx]|\d{13})$/)
+      .optional(),
+    publication_year: z
+      .number()
+      .int()
+      .min(1900)
+      .max(new Date().getFullYear())
+      .optional(),
+    stock_available: z.number().int().min(0).default(0).optional(),
+    cover_image: z
+      .instanceof(File)
+      .optional()
+      .refine((file) => !file || file.type.startsWith("image/"), {
+        message: "Hanya file gambar yang diperbolehkan",
+      }),
   })
 );
 
-const { isFieldDirty, handleSubmit } = useForm({
+const { toast } = useToast();
+const createBook = useBookStore();
+const error = ref<string | null>(null);
+
+const { handleSubmit, isFieldDirty } = useForm({
   validationSchema: formSchema,
 });
 
-const onSubmit = handleSubmit((values) => {
-  toast({
-    title: "You submitted the following values:",
-    description: h(
-      "pre",
-      { class: "mt-2 w-[340px] rounded-md bg-slate-950 p-4" },
-      h("code", { class: "text-white" }, JSON.stringify(values, null, 2))
-    ),
-  });
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    error.value = null;
+    await createBook.addBook(values);
+
+    toast({
+      title: "Book Added Successfully!",
+      description: "Your book has been added to the collection.",
+    });
+
+    // Reset form atau navigasi jika perlu
+    // form.value = { ...defaultValues };
+    // atau navigateTo('/books');
+  } catch (e: any) {
+    error.value = e.message || "Failed to add book";
+    toast({
+      title: "Error",
+      description: error.value,
+      variant: "destructive",
+    });
+  }
 });
 </script>
 

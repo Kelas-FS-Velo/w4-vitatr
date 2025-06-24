@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\SemanticSearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
@@ -46,6 +47,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/books/{book}', [BookController::class, 'show']);
     Route::put('/books/{book}', [BookController::class, 'update']);
     Route::delete('/books/{book}', [BookController::class, 'destroy']);
+
+    // SEARCH
+    Route::get('/search', [SemanticSearchController::class, 'search']);
+
     // LOANS
     Route::get('/loans', [LoanController::class, 'index']);
     Route::post('/loans', [LoanController::class, 'store']);
