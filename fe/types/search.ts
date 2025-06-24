@@ -7,24 +7,31 @@ export interface BookApiResponse {
 }
 export type SearchResults = IBook[];
 
+export interface SearchFilters {
+  categories?: string[];
+  year_min?: number;
+  year_max?: number;
+}
+
 export interface ISearchResult {
+  id: string;
   score: number; // Similarity score 0-1 dari Qdrant
-  book: IBook | IBookPayload; // Data lengkap buku
-  // atau gunakan payload minimal:
   payload: {
-    id: string;
     title: string;
     author: string;
     cover_image: string;
     categories: BookCategory[];
+    publication_year?: number;
   };
+  vector_id?: string;
 }
 
 // Type khusus hasil search
 export interface IBookSearchResult {
   score: number; // Wajib: similarity score dari Qdrant (0-1)
-  highlights?: { // Opsional: untuk UI highlighting
-    field: 'title' | 'description';
+  highlights?: {
+    // Opsional: untuk UI highlighting
+    field: "title" | "description";
     matched_text: string;
   }[];
   data: IBook; // atau Pick<IBook, 'id' | 'title' | ...> untuk payload ringkas

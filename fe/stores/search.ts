@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import type { IBook } from "~/types/books";
 import type { SearchResults } from "~/types/search";
 
 export const useSearchStore = defineStore("search", () => {
   const searchQuery = ref<string>("");
-  const searchResults = ref<SearchResults>([]); // <-- this is Book[]
+  const searchResults = ref<IBook[]>([]); // <-- this is Book[]
   const isLoading = ref<boolean>(false);
   const error = ref<string | null>(null);
 

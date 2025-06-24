@@ -17,7 +17,6 @@ export interface IBook {
   categories: BookCategory[]; // Array dari kategori/tag
   stock_available: number;
   vector_id?: string; // Opsional: ID vektor di Qdrant
-  score?: number; // Only present in search results
 }
 
 export interface IBookPayload {

@@ -1,67 +1,148 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { IBook, IBookPayload } from "~/types/books";
+import type { BookCategory, IBook, IBookPayload } from "~/types/books";
+import type { ISearchResult } from "~/types/search";
+
+interface ApiResponse<T> {
+  data: T;
+}
 
 export const useBookStore = defineStore("books", () => {
+  // State
   const books = ref<IBook[]>([]);
+  const searchResults = ref<ISearchResult[]>([]);
   const isLoading = ref(false);
+  const error = ref<string | null>(null);
 
+  // Fetch books (public endpoint)
   async function fetchBooks() {
     isLoading.value = true;
+    error.value = null;
     try {
-      const data = await useSanctumFetch<IBook[]>("/api/books");
-      books.value = data;
-    } catch (e) {
-      console.error("Failed to fetch books", e);
+      const response = await $fetch<ApiResponse<IBook[]>>("/api/books");
+      books.value = response.data || [];
+    } catch (err: unknown) {
+      error.value =
+        err instanceof Error ? err.message : "Failed to fetch books";
+      console.error("Failed to fetch books", err);
     } finally {
       isLoading.value = false;
     }
   }
 
+  interface BookResponse {
+    data: IBook;
+  }
+
+  // Add book - versi paling sederhana dan benar
   async function addBook(payload: IBookPayload) {
     try {
-      await useSanctumFetch("/api/books", {
+      const response = await useSanctumFetch<BookResponse>("/api/books", {
         method: "POST",
         body: payload,
       });
-      await fetchBooks(); // Refresh list
-    } catch (e) {
-      console.error("Failed to add book", e);
-      throw e;
+
+      if (response.data) {
+        books.value.push(response.data);
+      }
+    } catch (err) {
+      console.error("Failed to add book", err);
+      throw err;
     }
   }
 
-  async function updateBook(id: number, payload: IBookPayload) {
+  // Update book - versi optimal
+  async function updateBook(id: string, payload: IBookPayload) {
+    isLoading.value = true;
     try {
-      await useSanctumFetch(`/api/books/${id}`, {
+      const response = await useSanctumFetch<BookResponse>(`/api/books/${id}`, {
         method: "PUT",
         body: payload,
       });
-      await fetchBooks(); // Refresh list
-    } catch (e) {
-      console.error("Failed to update book", e);
-      throw e;
+
+      if (response.data) {
+        const index = books.value.findIndex((book) => book.id === id);
+        if (index !== -1) {
+          books.value[index] = response.data;
+        }
+      }
+    } catch (err) {
+      console.error("Failed to update book", err);
+      throw err;
+    } finally {
+      isLoading.value = false;
     }
   }
 
-  async function deleteBook(id: number) {
+  // Search books (public endpoint)
+  async function searchBooks(
+    query: string,
+    filters?: {
+      categories?: BookCategory[];
+      year_min?: number;
+      year_max?: number;
+    }
+  ) {
+    isLoading.value = true;
+    error.value = null;
+
+    try {
+      const params = new URLSearchParams({ query });
+
+      if (filters?.categories) {
+        filters.categories.forEach((cat) =>
+          params.append("filters[categories][]", cat)
+        );
+      }
+      if (filters?.year_min) {
+        params.set("filters[year_min]", filters.year_min.toString());
+      }
+      if (filters?.year_max) {
+        params.set("filters[year_max]", filters.year_max.toString());
+      }
+
+      const response = await $fetch<ApiResponse<{ results: ISearchResult[] }>>(
+        `/api/search?${params.toString()}`
+      );
+
+      searchResults.value = response.data?.results || [];
+    } catch (err: unknown) {
+      error.value =
+        err instanceof Error ? err.message : "Failed to search books";
+      searchResults.value = [];
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // Delete book (protected endpoint)
+  async function deleteBook(id: string) {
+    isLoading.value = true;
+    error.value = null;
     try {
       await useSanctumFetch(`/api/books/${id}`, {
         method: "DELETE",
       });
-      await fetchBooks(); // Refresh list
-    } catch (e) {
-      console.error("Failed to delete book", e);
-      throw e;
+      books.value = books.value.filter((book) => book.id !== id);
+    } catch (err: unknown) {
+      error.value =
+        err instanceof Error ? err.message : "Failed to delete book";
+      console.error("Failed to delete book", err);
+      throw err;
+    } finally {
+      isLoading.value = false;
     }
   }
 
   return {
     books,
+    searchResults,
     isLoading,
+    error,
     fetchBooks,
     addBook,
     updateBook,
+    searchBooks,
     deleteBook,
   };
 });
