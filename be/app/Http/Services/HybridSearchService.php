@@ -19,7 +19,7 @@ class HybridSearchService
         float $semanticWeight = 0.6,
         int $limit = 20
     ): Collection {
-        // 1. Text-based search (Database)
+        // 1. Text-based search (PostgreSQL)
         $textResults = $this->textSearch($query, $filters, $limit);
 
         // 2. Semantic search (Qdrant)
@@ -37,13 +37,30 @@ class HybridSearchService
                 $q->whereJsonContains('categories', $cats))
             ->when(Arr::get($filters, 'year_min'), fn ($q, $year) =>
                 $q->where('publication_year', '>=', $year))
+            ->when(Arr::get($filters, 'year_max'), fn ($q, $year) =>
+                $q->where('publication_year', '<=', $year))
             ->limit($limit)
             ->get()
             ->map(fn ($book) => [
-                'score' => 1.0, // Default score untuk sorting
+                'score' => $this->calculateTextScore($book, $query), // Skor dinamis
                 'book' => $book,
                 'type' => 'text'
             ]);
+    }
+
+    protected function calculateTextScore(Book $book, string $query): float
+    {
+        // Implementasi scoring yang lebih canggih di PostgreSQL
+        // Contoh sederhana: hitung kemunculan kata kunci
+        $keywords = explode(' ', strtolower($query));
+        $text = strtolower($book->title.' '.$book->author.' '.$book->description);
+
+        $score = 0;
+        foreach ($keywords as $keyword) {
+            $score += substr_count($text, $keyword);
+        }
+
+        return min(1.0, $score * 0.1); // Normalisasi ke range 0-1
     }
 
     protected function semanticSearch(string $query, array $filters, int $limit): Collection
@@ -60,7 +77,7 @@ class HybridSearchService
             ->map(function ($item) {
                 return [
                     'score' => $item['score'],
-                    'book' => Book::find($item['id']), // Load dari database
+                    'book' => Book::find($item['id']),
                     'type' => 'semantic'
                 ];
             })
@@ -71,7 +88,10 @@ class HybridSearchService
     {
         return [
             'categories' => Arr::get($filters, 'categories'),
-            'publication_year' => Arr::get($filters, 'year_min')
+            'publication_year' => [
+                'gte' => Arr::get($filters, 'year_min'),
+                'lte' => Arr::get($filters, 'year_max')
+            ]
         ];
     }
 

@@ -35,6 +35,7 @@ class SemanticSearchController extends Controller
             'filters.publication_year' => 'sometimes|integer|min:1900|max:' . date('Y'),
         ]);
 
+
         try {
             // 2. Konversi query ke embedding
             $embedding = $this->embeddingService->generateFromText($validated['query']);

@@ -89,7 +89,7 @@ class BookController extends Controller
 
         return response()->json($book);
     }
-
+    
     public function destroy(Book $book)
     {
         // Hapus vector dari Qdrant

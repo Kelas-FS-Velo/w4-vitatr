@@ -107,6 +107,14 @@ class VectorStoreService
         }, $retryDelay);
     }
 
+    public function searchWithFilters(array $embedding, array $filters, int $limit) {
+        // Implementasi pencarian vektor dengan filter kompleks
+    }
+
+    public function searchWithReviews($bookEmbedding, $reviewEmbedding, $weights) {
+        // Implementasi kombinasi embedding
+    }
+
     public function deleteVector(string $vectorId): bool
     {
         try {
