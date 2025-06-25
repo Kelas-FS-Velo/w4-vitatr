@@ -4,27 +4,70 @@ export type BookCategory =
   | "fiction"
   | "non-fiction"
   | "science"
-  | "history";
+  | "history"
+  | string; // Allow for custom categories
 
 export interface IBook {
-  id: string; // UUID format
+  id: string;
   title: string;
   author: string;
-  isbn: string; // Format ISBN
-  description: string; // Untuk semantic search
+  isbn: string;
+  description: string;
   publication_year: number;
-  cover_image: string; // URL atau path ke gambar
-  categories: BookCategory[]; // Array dari kategori/tag
+  cover_image: string; // URL to the image
   stock_available: number;
-  vector_id?: string; // Opsional: ID vektor di Qdrant
+  categories: BookCategory[];
+  vector_id?: string; // Optional for vector search
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface IBookPayload {
   title: string;
   author: string;
-  isbn?: string; // Opsional jika tidak semua buku perlu ISBN
+  isbn: string;
   description: string;
-  publication_year?: number; // Opsional
+  publication_year: number;
+  cover_image: File | string; // Can be either File (upload) or string (URL)
+  stock_available: number;
   categories: BookCategory[];
-  stock_available?: number; // Default bisa 0
+}
+
+// For search results
+export interface ISearchResult {
+  id: string;
+  title: string;
+  author: string;
+  publication_year: number;
+  cover_image: string;
+  categories: BookCategory[];
+  score?: number; // For search relevance scoring
+  highlight?: {
+    // For search term highlighting
+    description?: string[];
+    title?: string[];
+  };
+}
+
+// API Response Types
+export interface ApiListResponse<T> {
+  data: T[];
+  meta?: {
+    total: number;
+    per_page: number;
+    current_page: number;
+    last_page: number;
+  };
+}
+
+export interface ApiSingleResponse<T> {
+  data: T;
+}
+
+// For search filters
+export interface BookSearchFilters {
+  categories?: BookCategory[];
+  year_min?: number;
+  year_max?: number;
+  in_stock?: boolean;
 }

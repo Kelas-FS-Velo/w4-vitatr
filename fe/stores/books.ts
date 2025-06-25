@@ -1,11 +1,13 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import type { BookCategory, IBook, IBookPayload } from "~/types/books";
+import type {
+  ApiSingleResponse,
+  ApiListResponse,
+  BookCategory,
+  IBook,
+  IBookPayload,
+} from "@/types/books";
 import type { ISearchResult } from "~/types/search";
-
-interface ApiResponse<T> {
-  data: T;
-}
 
 export const useBookStore = defineStore("books", () => {
   // State
@@ -14,12 +16,12 @@ export const useBookStore = defineStore("books", () => {
   const isLoading = ref(false);
   const error = ref<string | null>(null);
 
-  // Fetch books (public endpoint)
+  // Fetch books (public endpoint) - returns multiple books
   async function fetchBooks() {
     isLoading.value = true;
     error.value = null;
     try {
-      const response = await $fetch<ApiResponse<IBook[]>>("/api/books");
+      const response = await $fetch<ApiListResponse<IBook>>("/api/books");
       books.value = response.data || [];
     } catch (err: unknown) {
       error.value =
@@ -30,35 +32,41 @@ export const useBookStore = defineStore("books", () => {
     }
   }
 
-  interface BookResponse {
-    data: IBook;
-  }
-
-  // Add book - versi paling sederhana dan benar
+  // Add book - returns single book
   async function addBook(payload: IBookPayload) {
+    isLoading.value = true;
     try {
-      const response = await useSanctumFetch<BookResponse>("/api/books", {
-        method: "POST",
-        body: payload,
-      });
+      const response = await useSanctumFetch<ApiSingleResponse<IBook>>(
+        "/api/books",
+        {
+          method: "POST",
+          body: payload,
+        }
+      );
 
       if (response.data) {
         books.value.push(response.data);
       }
+      return response.data;
     } catch (err) {
       console.error("Failed to add book", err);
       throw err;
+    } finally {
+      isLoading.value = false;
     }
   }
 
-  // Update book - versi optimal
+  // Update book - returns single book
   async function updateBook(id: string, payload: IBookPayload) {
     isLoading.value = true;
     try {
-      const response = await useSanctumFetch<BookResponse>(`/api/books/${id}`, {
-        method: "PUT",
-        body: payload,
-      });
+      const response = await useSanctumFetch<ApiSingleResponse<IBook>>(
+        `/api/books/${id}`,
+        {
+          method: "PUT",
+          body: payload,
+        }
+      );
 
       if (response.data) {
         const index = books.value.findIndex((book) => book.id === id);
@@ -66,6 +74,7 @@ export const useBookStore = defineStore("books", () => {
           books.value[index] = response.data;
         }
       }
+      return response.data;
     } catch (err) {
       console.error("Failed to update book", err);
       throw err;
@@ -74,7 +83,7 @@ export const useBookStore = defineStore("books", () => {
     }
   }
 
-  // Search books (public endpoint)
+  // Search books (public endpoint) - returns multiple results
   async function searchBooks(
     query: string,
     filters?: {
@@ -101,11 +110,11 @@ export const useBookStore = defineStore("books", () => {
         params.set("filters[year_max]", filters.year_max.toString());
       }
 
-      const response = await $fetch<ApiResponse<{ results: ISearchResult[] }>>(
+      const response = await $fetch<ApiListResponse<ISearchResult>>(
         `/api/search?${params.toString()}`
       );
 
-      searchResults.value = response.data?.results || [];
+      searchResults.value = response.data || [];
     } catch (err: unknown) {
       error.value =
         err instanceof Error ? err.message : "Failed to search books";
@@ -115,7 +124,7 @@ export const useBookStore = defineStore("books", () => {
     }
   }
 
-  // Delete book (protected endpoint)
+  // Delete book (protected endpoint) - no response data needed
   async function deleteBook(id: string) {
     isLoading.value = true;
     error.value = null;

@@ -17,7 +17,7 @@ class StoreBookRequest extends FormRequest
             'categories' => ['required', 'array', 'min:1'],
             'categories.*' => ['string'],
             'stock_available' => ['required', 'integer', 'min:0'],
-            'cover_img' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'cover_image' => ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ];
     }
 
