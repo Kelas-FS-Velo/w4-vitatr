@@ -19,6 +19,9 @@ describe("Auth Store", () => {
     expect(store.user?.name).toBe("Jane Doe");
     expect(store.user?.email).toBe("jane@example.com");
     expect(store.isLoggedIn).toBe(true);
+
+    // ✅ navigate user ke dashboard
+    expect(navigateTo).toHaveBeenCalledWith("/dashboard");
   });
 
   test("register success and user is set", async () => {
