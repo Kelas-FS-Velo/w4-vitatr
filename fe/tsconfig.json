@@ -4,9 +4,11 @@
     "baseUrl": ".", // ⬅️ Wajib: agar paths relatif dari root
     "paths": {
       "~/*": ["./*"], // ⬅️ Alias ~ untuk Nuxt
-      "@/*": ["./*"] // ⬅️ Alias @ juga umum dipakai
+      "@/*": ["./*"], // ⬅️ Alias @ juga umum dipakai
+      "#imports": [".nuxt/imports.d.ts"]
     },
     "types": ["nuxt", "vue", "vitest/globals"]
   }
 }
+
 

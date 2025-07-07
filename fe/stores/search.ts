@@ -30,8 +30,9 @@ export const useSearchStore = defineStore("search", () => {
   };
 
   // Main search action
-  const searchBooks = async (): Promise<void> => {
+  const searchBooks = async (customFetch?: typeof useFetch): Promise<void> => {
     if (!searchQuery.value.trim()) {
+      console.log("⛔ Empty query, skipping");
       searchResults.value = [];
       return;
     }
@@ -40,7 +41,13 @@ export const useSearchStore = defineStore("search", () => {
     error.value = null;
 
     try {
-      const { data } = await useFetch<ISearchResponse>("/api/search", {
+      const fetchFn = customFetch || useFetch;
+      console.log(
+        "🔍 Using fetchFn:",
+        fetchFn === customFetch ? "custom" : "default"
+      );
+
+      const { data } = await fetchFn<ISearchResponse>("/api/search", {
         method: "POST",
         body: {
           query: searchQuery.value,
@@ -50,6 +57,7 @@ export const useSearchStore = defineStore("search", () => {
         },
       });
 
+      console.log("📦 Response data:", data?.value);
       searchResults.value = data.value?.results || [];
     } catch (err) {
       error.value =

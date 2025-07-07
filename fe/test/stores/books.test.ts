@@ -137,24 +137,24 @@ describe("Book Store", () => {
     });
   });
   
-  test("searchBooks success with filters", async () => {
+  test('searchBooks success with filters', async () => {
     const mockResults = [
-      getMockSearchResult({ id: "1", title: "Book A" }),
-      getMockSearchResult({ id: "2", title: "Book B" }),
-    ];
-
-    const mock = mockNuxtFetch({ response: { data: mockResults } });
-
-    const store = useBookStore();
-
-    await store.searchBooks("magic", {
-      categories: ["fiction"],
+      getMockSearchResult({ id: '1', title: 'Book A' }),
+      getMockSearchResult({ id: '2', title: 'Book B' }),
+    ]
+  
+    const mock = mockNuxtFetch({ response: { data: mockResults } })
+  
+    const store = useBookStore()
+  
+    await store.searchBooks('magic', {
+      categories: ['fiction'],
       year_min: 2010,
       year_max: 2022,
-    });
-
-    expect(store.searchResults).toEqual(mockResults);
-    expect(mock).toHaveBeenCalled();
-    expect(store.error).toBeNull();
-  });
+    })
+  
+    expect(store.searchResults).toEqual(mockResults)
+    expect(mock).toHaveBeenCalled()
+    expect(store.error).toBeNull()
+  })
 });
