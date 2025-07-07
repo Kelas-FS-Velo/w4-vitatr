@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import type { IValidationError } from "~/types/auth";
 import { FetchError } from "ofetch";
 

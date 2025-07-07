@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 import type { IUser, ILoginPayload, IRegisterPayload } from "~/types/auth";
 import { useFormErrors } from "~/composables/useFormErrors";
 
